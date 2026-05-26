@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from models import ModelWrapper
 from utils import (
     extract_response_content,
     format_source_files_for_prompt,
@@ -16,8 +17,6 @@ if TYPE_CHECKING:
 
 
 def initial_test_write_node(agent_state: "AgentState") -> dict[str, str]:
-    from models import common_generation_model
-
     class_under_test = get_current_class_under_test(agent_state)
     print(
         f"[initial_test_write_node] Generating initial test for "
@@ -25,7 +24,7 @@ def initial_test_write_node(agent_state: "AgentState") -> dict[str, str]:
         f"{class_under_test.file_path}"
     )
     prompt = _build_prompt(agent_state)
-    response = common_generation_model.invoke(prompt)
+    response = ModelWrapper().invoke(prompt)
     test_class = strip_markdown_code_fence(extract_response_content(response))
 
     if not test_class:

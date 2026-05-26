@@ -46,6 +46,18 @@ def is_concrete_class(java_code: str) -> bool:
         return False
     return bool(class_pattern.search(java_code))
 
+def persist_current_class_index(index: int):
+    tmp_file_location = str(config.get("CLASS_INDEX_TMP_FILE", "tmp.txt"))
+    with open(tmp_file_location, "w", encoding="UTF-8") as file:
+        file.write(str(index))
+
+def retrieve_current_class_index() -> int:
+    tmp_file_location = str(config.get("CLASS_INDEX_TMP_FILE", "tmp.txt"))
+    if Path(tmp_file_location).is_file():
+        with open(tmp_file_location, "r", encoding="UTF-8") as file:
+            return int(file.read())
+    return 0
+
 def run_maven(project_dir: str):
     mvn_path = _get_maven_executable()
     result = subprocess.run(

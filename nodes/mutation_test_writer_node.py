@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from models import ModelWrapper
 from utils import (
     extract_response_content,
     format_source_files_for_prompt,
@@ -16,14 +17,12 @@ if TYPE_CHECKING:
 
 
 def mutation_test_writer_node(agent_state: "AgentState") -> dict[str, str]:
-    from models import common_generation_model
-
     print(
         f"[mutation_test_writer_node] Adding mutation-focused tests "
         f"(iteration {agent_state.get('mutation_iterations', 0) + 1})."
     )
     prompt = _build_prompt(agent_state)
-    response = common_generation_model.invoke(prompt)
+    response = ModelWrapper().invoke(prompt)
     updated_test_class = strip_markdown_code_fence(extract_response_content(response))
 
     if not updated_test_class:
