@@ -1,6 +1,7 @@
 # from langchain_ollama import ChatOllama # TODO: do not remove - it is here for testing to not consume API limits
 from typing import Sequence, Any
 
+import openai
 from langchain_core.prompt_values import PromptValue
 from langchain_openai import ChatOpenAI
 
@@ -28,13 +29,11 @@ class ModelWrapper:
         return cls.instance
 
     def invoke(self, prompt_input: PromptValue | str | Sequence[Any]):
-        while self.time_out_seconds < config.get("MAX_LLM_TIMEOUT", 60):
+        while self.time_out_seconds < int(config.get("MAX_LLM_TIMEOUT", 60)):
             try:
                 return self.model.invoke(prompt_input)
-            except TimeoutError:
-                print(f"[TIMEOUT]: timeout value of {self.time_out_seconds} has been exceeded.")
-                self.time_out_seconds += 60
-                self._set_model()
+            except openai.APIConnectionError:
+                self._handle_timeout()
         raise TimeoutError("Timeout exceeded maximum allowed value")
 
     def _set_model(self):
@@ -44,3 +43,8 @@ class ModelWrapper:
             organization="org-ENWuCLTuWsptJcXQVIR6Exwa",
             timeout=self.time_out_seconds,
         )
+
+    def _handle_timeout(self):
+        print(f"[TIMEOUT]: timeout value of {self.time_out_seconds} seconds has been exceeded.")
+        self.time_out_seconds += 60
+        self._set_model()

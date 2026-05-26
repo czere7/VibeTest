@@ -10,4 +10,5 @@ dependencies = [
     "langgraph",
     "pillow",
     "python-dotenv",
+    "openai",
 ]
