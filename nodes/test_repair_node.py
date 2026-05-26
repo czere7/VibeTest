@@ -8,6 +8,7 @@ from utils import (
     get_nearby_test_examples,
     get_relevant_source_files,
     load_prompt,
+    retry_model_invocation,
     strip_markdown_code_fence,
 )
 
@@ -23,7 +24,7 @@ def test_repair_node(agent_state: "AgentState") -> dict[str, str]:
         f"(attempt {agent_state.get('repair_attempts', 0) + 1})."
     )
     prompt = _build_prompt(agent_state)
-    response = common_generation_model.invoke(prompt)
+    response = retry_model_invocation(lambda: common_generation_model.invoke(prompt))
     repaired_test_class = strip_markdown_code_fence(extract_response_content(response))
 
     if not repaired_test_class:

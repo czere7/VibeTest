@@ -1,0 +1,27 @@
+ngChainPendingDeprecationWarning: The default value of `allowed_objects` will change in a future version. Pass an explicit value (e.g., allowed_objects='messages' or allowed_objects='core') to suppress this warning.
+  from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+Traceback (most recent call last):
+  File "C:\git\innovate\VibeTest\main.py", line 5, in <module>
+    from langgraph.graph import END, START, StateGraph
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\graph\__init__.py", line 2, in <module>
+    from langgraph.graph.message import MessageGraph, MessagesState, add_messages
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\graph\message.py", line 28, in <module>
+    from langgraph.graph.state import StateGraph
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\graph\state.py", line 59, in <module>
+    from langgraph.graph.branch import Branch
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\graph\branch.py", line 31, in <module>
+    from langgraph.pregel.write import PASSTHROUGH, ChannelWrite, ChannelWriteEntry
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\pregel\__init__.py", line 71, in <module>
+    from langgraph.pregel.algo import (
+    ...<5 lines>...
+    )
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\pregel\algo.py", line 73, in <module>
+    from langgraph.pregel.read import INPUT_CACHE_KEY_TYPE, PregelNode
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\pregel\read.py", line 14, in <module>
+    from langgraph.pregel.protocol import PregelProtocol
+  File "C:\Users\lradosky\AppData\Local\Programs\Python\Python313\Lib\site-packages\langgraph\pregel\protocol.py", line 16, in <module>
+    class PregelProtocol(Runnable[InputT, Any], Generic[StateT, InputT, OutputT], ABC):
+    ...<123 lines>...
+        ) -> dict[str, Any] | Any: ...
+  File "<frozen abc>", line 106, in __new__
+TypeError: Cannot create a consistent method resolution order (MRO) for bases ABC, Generic
