@@ -1,13 +1,16 @@
 from typing import TYPE_CHECKING
 
 from Extractor import Extractor
-from utils import get_working_directory, initial_metric_state, is_concrete_class
+from utils import get_working_directory, initial_metric_state, is_concrete_class, retrieve_current_class_index
 
 if TYPE_CHECKING:
     from AgentState import AgentState
 
 
 def file_retriever_node(agent_state: "AgentState") -> dict:
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
+    
     project_dir = get_working_directory()
     print(f"[file_retriever_node] Reading Java source files from: {project_dir}")
     extracted_files = Extractor(str(project_dir)).extract_all()
@@ -25,9 +28,10 @@ def file_retriever_node(agent_state: "AgentState") -> dict:
         f"{len(test_target_files)} concrete classes will be tested."
     )
 
+    current_class_index = retrieve_current_class_index()
     return {
         "all_files": extracted_files,
         "all_test_files": test_target_files,
-        "current_class_index": 0,
+        "current_class_index": current_class_index,
         **initial_metric_state(),
     }

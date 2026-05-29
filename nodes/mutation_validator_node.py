@@ -19,6 +19,9 @@ if TYPE_CHECKING:
 
 
 def mutation_validator_node(agent_state: "AgentState") -> dict:
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
+    
     project_dir = get_working_directory()
     threshold = get_float_config("MUTATION_IMPROVEMENT_THRESHOLD")
     previous_score = float(agent_state.get("mutation_current", 0.0))

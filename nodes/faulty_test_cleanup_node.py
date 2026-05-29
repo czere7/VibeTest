@@ -8,6 +8,9 @@ if TYPE_CHECKING:
 
 
 def faulty_test_cleanup_node(agent_state: "AgentState") -> dict:
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
+    
     last_compilable_test_class = agent_state.get("last_compilable_test_class", "").strip()
     last_compilable_test_file_path = agent_state.get("last_compilable_test_file_path", "")
     if last_compilable_test_class and last_compilable_test_file_path:

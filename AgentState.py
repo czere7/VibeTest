@@ -31,3 +31,4 @@ class AgentState(TypedDict, total=False):
     repair_attempts: int
     coverage_iterations: int
     mutation_iterations: int
+    unrecoverable_error_for_current_class: bool

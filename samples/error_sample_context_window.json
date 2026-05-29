@@ -1,0 +1,26 @@
+{'error': {'message': 'litellm.ContextWindowExceededError: litellm.BadRequestError: litellm._pre_call_checks: Context Window exceeded for given call. No models have context window large enough for this call.\nModel=vertex_ai/claude-sonnet-4-5, Max Input Tokens=200000, Got=221404\nmodel=google/claude-sonnet-4-5. context_window_fallbacks=None. fallbacks=[
+            {\'google/gemini-2.5-pro\': [\'google/gemini-2.5-flash\'
+                ]
+            },
+            {\'Llama-3.1-70b\': [\'Gemma3-27b\'
+                ]
+            },
+            {\'Gemma3-27b\': [\'Llama-3.1-70b\'
+                ]
+            },
+            {\'azure/gpt-5.1\': [\'azure/gpt-5\'
+                ]
+            },
+            {\'azure/gpt-5\': [\'azure/gpt-5-mini\'
+                ]
+            },
+            {\'google/claude-sonnet-4-5\': [\'google/claude-sonnet-4\'
+                ]
+            },
+            {\'azure/gpt-4.1\': [\'azure/gpt-4o\'
+                ]
+            },
+            {\'azure/gpt-4o\': [\'azure/gpt-4.1-mini\'
+                ]
+            }
+        ].\n\nSet \'context_window_fallback\' - https: //docs.litellm.ai/docs/routing#fallbacks. Received Model Group=google/claude-sonnet-4-5\nAvailable Model Group Fallbacks=[\'google/claude-sonnet-4\']\nError doing the fallback: litellm.BadRequestError: Vertex_aiException BadRequestError - {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 205283 tokens > 200000 maximum"},"request_id":"req_vrtx_011CbWXP5Zo7vGjy4Wvm1Dtp"}No fallback model group found for original model_group=google/claude-sonnet-4. Fallbacks=[{\'google/gemini-2.5-pro\': [\'google/gemini-2.5-flash\']}, {\'Llama-3.1-70b\': [\'Gemma3-27b\']}, {\'Gemma3-27b\': [\'Llama-3.1-70b\']}, {\'azure/gpt-5.1\': [\'azure/gpt-5\']}, {\'azure/gpt-5\': [\'azure/gpt-5-mini\']}, {\'google/claude-sonnet-4-5\': [\'google/claude-sonnet-4\']}, {\'azure/gpt-4.1\': [\'azure/gpt-4o\']}, {\'azure/gpt-4o\': [\'azure/gpt-4.1-mini\']}]. Received Model Group=google/claude-sonnet-4\nAvailable Model Group Fallbacks=None\nError doing the fallback: litellm.BadRequestError: Vertex_aiException BadRequestError - {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 205283 tokens > 200000 maximum"},"request_id":"req_vrtx_011CbWXP5Zo7vGjy4Wvm1Dtp"}No fallback model group found for original model_group=google/claude-sonnet-4. Fallbacks=[{\'google/gemini-2.5-pro\': [\'google/gemini-2.5-flash\']}, {\'Llama-3.1-70b\': [\'Gemma3-27b\']}, {\'Gemma3-27b\': [\'Llama-3.1-70b\']}, {\'azure/gpt-5.1\': [\'azure/gpt-5\']}, {\'azure/gpt-5\': [\'azure/gpt-5-mini\']}, {\'google/claude-sonnet-4-5\': [\'google/claude-sonnet-4\']}, {\'azure/gpt-4.1\': [\'azure/gpt-4o\']}, {\'azure/gpt-4o\': [\'azure/gpt-4.1-mini\']}]', 'type': None, 'param': None, 'code': '400'}}

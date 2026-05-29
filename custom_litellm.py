@@ -3,7 +3,8 @@ Custom LiteLLM wrapper with enhanced error handling and retry logic.
 """
 import time, requests
 from typing import Any, List, Optional, Union
-from utils import config
+from utils import config, log_litellm_response_error
+from exceptions import ContextWindowOverflowError
 
 from langchain_core.messages import BaseMessage, AIMessage, HumanMessage, SystemMessage
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -64,6 +65,9 @@ class CustomChatLiteLLM():
                 {
                     "role": "user",
                     "content": prompt,
+                    "cache_control": {
+                        "type": "ephemeral"
+                    }
                 },
             ],
             "temperature": 0.7,
@@ -75,9 +79,22 @@ class CustomChatLiteLLM():
             json=payload,
             timeout=int(config.get('MODEL_TIMEOUT', '900'))
         )
-        r.raise_for_status()
+
         data = r.json()
+
+        if 'error' in data:
+            log_litellm_response_error(data)
+            if 'litellm.ContextWindowExceededError' in data['error']['message']:
+                raise ContextWindowOverflowError(
+                    message=error_message,
+                    node_name=None,  # Will be set by the calling node
+                    class_info=None   # Will be set by the calling node
+                )
+        
+        r.raise_for_status()
+        
         result = data["choices"][0]["message"]["content"]
 
-        return result
+        return AIMessage(content=result)
+            
 

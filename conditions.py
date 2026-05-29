@@ -4,6 +4,9 @@ from utils import get_int_config
 
 
 def route_after_compile(agent_state: Mapping[str, Any]) -> str:
+    if agent_state.get("unrecoverable_error_for_current_class", False):
+        return "mutation_validator_node"
+
     if not agent_state.get("compiler_success", False):
         if agent_state.get("repair_attempts", 0) >= get_int_config("MAX_REPAIR_ATTEMPTS"):
             return "faulty_test_cleanup_node"
@@ -19,6 +22,9 @@ def route_after_compile(agent_state: Mapping[str, Any]) -> str:
 
 
 def route_after_coverage(agent_state: Mapping[str, Any]) -> str:
+    if agent_state.get("unrecoverable_error_for_current_class", False):
+        return "mutation_validator_node"
+    
     if agent_state.get("coverage_current", 0.0) >= 100.0:
         return "mutation_validator_node"
 
@@ -35,6 +41,9 @@ def route_after_coverage(agent_state: Mapping[str, Any]) -> str:
 
 
 def route_after_mutation(agent_state: Mapping[str, Any]) -> str:
+    if agent_state.get("unrecoverable_error_for_current_class", False):
+        return "class_advancer_node"
+    
     if agent_state.get("mutation_current", 0.0) >= 100.0:
         return "class_advancer_node"
 

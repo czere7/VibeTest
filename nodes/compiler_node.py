@@ -8,6 +8,9 @@ if TYPE_CHECKING:
 
 
 def compiler_node(agent_state: "AgentState") -> dict:
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
+    
     test_class = agent_state.get("test_class", "").strip()
     if not test_class:
         raise RuntimeError("Cannot compile tests because AgentState['test_class'] is empty.")

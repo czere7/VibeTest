@@ -88,6 +88,9 @@ SUREFIRE_PLUGIN = {
 
 
 def dependency_resolver_node(agent_state: "AgentState") -> dict:
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
+    
     project_dir = get_working_directory()
     print(f"[dependency_resolver_node] Resolving Maven test dependencies under: {project_dir}")
     pom_paths = _find_pom_files(project_dir)

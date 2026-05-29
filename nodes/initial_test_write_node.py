@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from models import ModelWrapper
 from utils import (
     extract_response_content,
     format_source_files_for_prompt,
@@ -8,16 +9,17 @@ from utils import (
     get_nearby_test_examples,
     get_relevant_source_files,
     load_prompt,
-    retry_model_invocation,
     strip_markdown_code_fence,
 )
+from exceptions import ContextWindowOverflowError
 
 if TYPE_CHECKING:
     from AgentState import AgentState
 
 
 def initial_test_write_node(agent_state: "AgentState") -> dict[str, str]:
-    from models import common_generation_model
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
 
     class_under_test = get_current_class_under_test(agent_state)
     print(
@@ -26,7 +28,13 @@ def initial_test_write_node(agent_state: "AgentState") -> dict[str, str]:
         f"{class_under_test.file_path}"
     )
     prompt = _build_prompt(agent_state)
-    response = retry_model_invocation(lambda: common_generation_model.invoke(prompt))
+
+    try:
+        response = ModelWrapper().invoke(prompt)
+    except ContextWindowOverflowError:
+        agent_state.set('unrecoverable_error_for_current_class', True)
+        return {}
+
     test_class = strip_markdown_code_fence(extract_response_content(response))
 
     if not test_class:

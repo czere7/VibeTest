@@ -19,6 +19,9 @@ if TYPE_CHECKING:
 
 
 def coverage_validator_node(agent_state: "AgentState") -> dict:
+    if agent_state.get('unrecoverable_error_for_current_class', False):
+        return {}
+    
     project_dir = get_working_directory()
     threshold = get_float_config("COVERAGE_IMPROVEMENT_THRESHOLD")
     previous_coverage = float(agent_state.get("coverage_current", 0.0))
