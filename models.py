@@ -5,6 +5,7 @@ import openai, time
 from custom_litellm import CustomChatLiteLLM
 from langchain_core.prompt_values import PromptValue
 from typing import Callable, TypeVar
+from exceptions import ContextWindowOverflowError
 
 from utils import config
 
@@ -86,6 +87,8 @@ class ModelWrapper:
                     # SUCCESS: Return immediately
                     return result
 
+                except ContextWindowOverflowError as e:
+                    raise e
                 except Exception as e:
                     last_exception = e
                     exception_name = type(e).__name__

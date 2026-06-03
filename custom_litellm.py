@@ -11,6 +11,7 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.outputs import ChatResult, ChatGeneration
 from langchain_litellm import ChatLiteLLM
 
+from json import dumps
 
 class CustomChatLiteLLM():
     """
@@ -83,13 +84,17 @@ class CustomChatLiteLLM():
         data = r.json()
 
         if 'error' in data:
-            log_litellm_response_error(data)
-            if 'litellm.ContextWindowExceededError' in data['error']['message']:
+            log_litellm_response_error(dumps(data))
+            error_message = data['error']['message']
+            if 'litellm.ContextWindowExceededError' in error_message:
                 raise ContextWindowOverflowError(
                     message=error_message,
                     node_name=None,  # Will be set by the calling node
                     class_info=None   # Will be set by the calling node
                 )
+            elif 'budget' in error_message.lower():
+                exit(-1)
+
         
         r.raise_for_status()
         

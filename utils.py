@@ -553,6 +553,7 @@ def initial_metric_state() -> dict[str, Any]:
         "repair_attempts": 0,
         "coverage_iterations": 0,
         "mutation_iterations": 0,
+        "unrecoverable_error_for_current_class": False
     }
 
 def reset_state_for_current_class() -> dict[str, Any]:
@@ -572,19 +573,19 @@ def _content_part_to_text(part: Any) -> str:
         return str(part.get("text", ""))
     return str(part)
 
-def log_litellm_response_error(litellm_response):
-    full_message = f'{datetime.now} message'
+def log_litellm_response_error(message):
+    full_message = f'{datetime.now()} {message}\n'
 
-    filename_date = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename_date = datetime.now().strftime("%Y%m%d")
     filename = os.path.join('log_miscelaneous', f'{filename_date}.log')
 
     with open(filename, 'a+', encoding='utf-8-sig') as f:
         f.write(full_message)
 
 def log_serious_error(message):
-    full_message = f'{datetime.now} message'
+    full_message = f'{datetime.now()} {message}\n'
 
-    filename_date = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename_date = datetime.now().strftime("%Y%m%d")
     filename = os.path.join('log_serious', f'{filename_date}.log')
 
     with open(filename, 'a+', encoding='utf-8-sig') as f:

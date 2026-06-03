@@ -88,6 +88,7 @@ SUREFIRE_PLUGIN = {
 
 
 def dependency_resolver_node(agent_state: "AgentState") -> dict:
+    print(f"Dependency Resolver Node. unrecoverable_error_for_current_class:{agent_state.get('unrecoverable_error_for_current_class', 'default')}")
     if agent_state.get('unrecoverable_error_for_current_class', False):
         return {}
     

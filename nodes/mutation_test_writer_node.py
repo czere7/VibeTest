@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 
 def mutation_test_writer_node(agent_state: "AgentState") -> dict[str, str]:
+    print(f"Mutation Test Writer Node. unrecoverable_error_for_current_class:{agent_state.get('unrecoverable_error_for_current_class', 'default')}")
     if agent_state.get('unrecoverable_error_for_current_class', False):
         return {}
 
@@ -30,8 +31,7 @@ def mutation_test_writer_node(agent_state: "AgentState") -> dict[str, str]:
     try:
         response = ModelWrapper().invoke(prompt)
     except ContextWindowOverflowError:
-        agent_state.set('unrecoverable_error_for_current_class', True)
-        return {}
+        return {'unrecoverable_error_for_current_class' : True}
 
     updated_test_class = strip_markdown_code_fence(extract_response_content(response))
 

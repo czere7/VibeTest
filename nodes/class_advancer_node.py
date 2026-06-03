@@ -9,8 +9,9 @@ if TYPE_CHECKING:
 
 
 def class_advancer_node(agent_state: "AgentState") -> dict:
+    print(f"Class Advancer Node. unrecoverable_error_for_current_class:{agent_state.get('unrecoverable_error_for_current_class', 'default')}")
     if agent_state.get("unrecoverable_error_for_current_class", False):
-        log_serious_error(f'Failed to create tests for class {current_class_index}')
+        log_serious_error(f'Failed to create tests({agent_state["test_class"]}) for class {agent_state["current_class_index"]}')
 
     next_index = agent_state["current_class_index"] + 1
     total = len(agent_state.get("all_test_files", []))
